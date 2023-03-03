@@ -4,34 +4,29 @@ const axios=require("axios");
 require('dotenv').config();
 const serverless = require('serverless-http')
 const router = express.Router();
-
 const app=express().use(body_parser.json());
 
 const token=process.env.TOKEN;
-const mytoken=process.env.MYTOKEN;
-
+const mytoken=process.env.VERIFY_TOKEN;
 
 app.listen(process.env.PORT,()=>{
     console.log("webhook is listening at "+process.env.PORT);
 });
 
-//to verify the callback url from dashboard side - cloud api side
-app.get("/webhook",(req,res)=>{
-   let mode=req.query["hub.mode"];
-   let challange=req.query["hub.challenge"];
-   let token=req.query["hub.verify_token"];
+app.get('/webhook', (req, res) => {
+    let mode = req.query['hub.mode'];
+    let challenge = req.query['hub.challenge'];
+    let token = req.query['hub.verify_token'];
 
 
     if(mode && token){
 
         if(mode==="subscribe" && token===mytoken){
-            res.status(200).send(challange);
+            res.status(200).send(challenge);
         }else{
             res.status(403);
         }
-
     }
-
 });
 
 app.post("/webhook",(req,res)=>{ //i want some 
@@ -53,7 +48,7 @@ app.post("/webhook",(req,res)=>{ //i want some
 
                console.log("phone number "+phon_no_id);
                console.log("from "+from);
-               console.log("boady param "+msg_body);
+               console.log("body param "+msg_body);
 
                axios({
                    method:"POST",
