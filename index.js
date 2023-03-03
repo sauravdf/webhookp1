@@ -2,6 +2,8 @@ const express=require("express");
 const body_parser=require("body-parser");
 const axios=require("axios");
 require('dotenv').config();
+const serverless = require('serverless-http')
+const router = express.Router();
 
 const app=express().use(body_parser.json());
 
@@ -9,8 +11,8 @@ const token=process.env.TOKEN;
 const mytoken=process.env.MYTOKEN;
 
 
-app.listen(process.env.PORT||8000,()=>{
-    console.log("webhook is listening at "+process.env.PORT||8000);
+app.listen(process.env.PORT,()=>{
+    console.log("webhook is listening at "+process.env.PORT);
 });
 
 //to verify the callback url from dashboard side - cloud api side
@@ -81,3 +83,6 @@ app.post("/webhook",(req,res)=>{ //i want some
 app.get("/",(req,res)=>{
     res.status(200).send("hello this is webhook setup");
 });
+
+app.use('/.netlify/functions/api',router)
+module.exports.handler =serverless(app)
