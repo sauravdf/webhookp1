@@ -1,10 +1,11 @@
-const express=require("express");
-const body_parser=require("body-parser");
-const axios=require("axios");
-require('dotenv').config();
-const serverless = require('serverless-http')
-const router = express.Router();
-const app=express().use(body_parser.json());
+import express, { Router } from "express";
+import pkg from "body-parser";
+const {json} = pkg;
+import axios from "axios";
+import 'dotenv/config'
+import serverless from 'serverless-http';
+const router = Router();
+const app=express().use(json());
 
 const token=process.env.TOKEN;
 const mytoken=process.env.VERIFY_TOKEN;
@@ -12,13 +13,15 @@ const mytoken=process.env.VERIFY_TOKEN;
 console.log("hello world");
 
 app.listen(process.env.PORT,()=>{
-    console.log("webhook is listening at "+process.env.PORT);
+    console.log("webhook is listening at port "+process.env.PORT);
 });
 
 app.get('/webhook', (req, res) => {
     let mode = req.query['hub.mode'];
     let challenge = req.query['hub.challenge'];
     let token = req.query['hub.verify_token'];
+
+    // const mytoken="saurabh"
 
 
     if(mode && token){
@@ -82,4 +85,4 @@ app.get("/",(req,res)=>{
 });
 
 app.use('/.netlify/functions/api',router)
-module.exports.handler =serverless(app)
+export const handler =serverless(app)

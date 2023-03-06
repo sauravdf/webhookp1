@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "node index.html",
     "build": "netlify deploy --prod"
   },
   "author": "Saurav",
   "license": "ISC",
   "dependencies": {
+    "@types/body-parser": "^1.19.2",
     "axios": "^0.27.2",
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.2",
     "netlify": "^13.1.2",
